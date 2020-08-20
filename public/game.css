@@ -1,0 +1,20 @@
+﻿body {
+
+}
+
+
+#world {
+    width: 786px;
+    height: 512px;
+    background: url("img/grass.png");
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+
+.cat {
+    position: absolute;
+}

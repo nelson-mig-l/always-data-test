@@ -1,0 +1,57 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Heat Sheet</title>
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <link href="game.css" rel="stylesheet">
+</head>
+<body onkeydown="keyboard(event)">
+    <!--
+    <div id="zero" style="position: absolute; top: 0px; left: 0px">A</div>
+    <div id="one" style="position: absolute; top: 0px; left: 0px">B</div>
+    <div id="two" style="position: absolute; top: 0px; left: 0px">C</div>
+    <div id="three" style="position: absolute; top: 0px; left: 0px">D</div>
+    -->
+    <div id="world">
+        <img class="cat" id="smile" src="img/cat_smile.png" style="top: 0px; left: 0px" />
+        <img class="cat" id="poo" src="img/poo.png" style="top: 64px; left: 64px" />
+        <img class="cat" id="dog" src="img/dog.png" style="top: 256px; left: 256px" />
+    </div>
+
+    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+    <script>
+        //const socket = io.connect('http://localhost:1337');
+        const socket = io(); // TIP: io() with no args does auto-discovery
+
+        const step = 64;
+        var id = 0;
+
+        socket.on('hello', (data) => {
+            console.log(data);
+            id = data.id;
+        });
+
+        function keyboard(event) {
+            socket.emit('key', { code: event.keyCode, who: "smile" });
+        }
+        socket.on('move', (data) => {
+            console.log("-->" +data);
+            var who = data.who;
+            var el = document.getElementById(who)
+            var key = data.code;
+            //console.log("moving:" + el.id);
+            var left = parseInt(el.style.left.replace(/px/, ""));
+            var top = parseInt(el.style.top.replace(/px/, ""));
+            if (key == 39) left += step;
+            if (key == 37) left -= step;
+            if (key == 40) top += step;
+            if (key == 38) top -= step;
+            //console.log(left + ", " + top);
+            el.style.top = top+"px";
+            el.style.left = left+"px";
+            
+        });
+    </script>
+</body>
+</html>

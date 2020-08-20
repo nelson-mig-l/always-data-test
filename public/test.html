@@ -1,0 +1,26 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Socket test</title>
+    <link rel="icon" type="image/png" href="favicon.png" />
+</head>
+<body>
+    <button onclick="send_message()">Click me</button>
+    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+    <script>
+        //const socket = io.connect('http://localhost:1337');
+        const socket = io(); // TIP: io() with no args does auto-discovery
+        socket.on('news', (data) => {
+            console.log(data);
+            socket.emit('my other event', { my: 'data' });
+        });
+        function send_message() {
+            socket.emit('send', 'a message');
+        }
+        socket.on('receive', (data) => {
+            console.log("got " + data);
+        });
+    </script>
+</body>
+</html>
